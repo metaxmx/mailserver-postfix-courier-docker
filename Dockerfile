@@ -38,8 +38,8 @@ COPY postfix/postfix.conf.example /etc/postfix/
 
 COPY courier/authdaemonrc /etc/courier/
 COPY courier/authmysqlrc.template /etc/courier/
-COPY courier/imapd-ssl.template /etc/courier/
-COPY courier/pop3d-ssl.template /etc/courier/
+COPY courier/imapd-ssl /etc/courier/
+COPY courier/pop3d-ssl /etc/courier/
 
 COPY defaults/* /etc/default/
 
