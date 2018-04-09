@@ -1,0 +1,6 @@
+db_type = mysql
+db_name = sqlgrey
+db_host = mysql
+db_user = sqlgrey
+db_pass = **********
+inet = 127.0.0.1:2501

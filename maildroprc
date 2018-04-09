@@ -1,0 +1,70 @@
+# Global maildrop filter file
+
+# Uncomment this line to make maildrop default to ~/Maildir for
+# delivery- this is where courier-imap (amongst others) will look.
+# DEFAULT="$HOME/Maildir"
+
+HOME_DIR="/home/postfix"
+#logfile "/var/log/maildroprc.log"
+EXTENSION="$1"
+RECIPIENT=tolower("$2")
+USER="$3"
+HOST="$4"
+SENDER="$5"
+
+SPAM_DIR="Spam"
+
+# Check if Maildir exists
+`test -d $HOME_DIR/$HOST/$USER`
+if ( $RETURNCODE != 0 )
+{
+    maildirmake.maildrop $HOME_DIR/$HOST/$USER
+}
+
+# Try to include user specific configs
+`test -f $HOME_DIR/filter/$HOST/$USER/maildroprc`
+if ( $RETURNCODE == 0 )
+{
+   include "filter/$HOST/$USER/maildroprc"
+}
+
+# Check for SpamAssassin and put to Spam folder
+if (/^X-Spam-Flag:.*YES/)
+{
+   log "Flagged as Spam"
+   # Autocreate extension maildir
+   #
+   # See if the user exists
+   `test -e $HOME_DIR/$HOST/$USER`
+
+   # Only continue if user is valid
+   if ( $RETURNCODE == 0 )
+   {
+      # See if the spam directory already exists
+      `test -e $HOME_DIR/$HOST/$USER/.$SPAM_DIR`
+      #log "Testing for $EXTENSION subdirectory: result=$RETURNCODE"
+
+      if ( $RETURNCODE != 0 ) # spam directory does not exist - so we create it
+      {
+
+         # Create the subdirectory
+         `maildirmake -f $SPAM_DIR $HOME_DIR/$HOST/$USER`
+         log "Ran \"maildirmake -f $SPAM_DIR $HOME_DIR/$HOST/$USER\""
+
+         # Auto-subscribe the subdirectory
+         `if ! grep -q INBOX.$SPAM_DIR $HOME_DIR/$HOST/$USER/courierimapsubscribed; then echo INBOX.$SPAM_DIR >> $HOME_DIR/$HOST/$USER/courierimapsubscribed; fi`
+
+         # Set permissions on the mailbox
+         `chmod -R 0700 $HOME_DIR/$HOST/$USER`
+         log " Ran \"chmod -R 0700 $HOME_DIR/$HOST/$USER\""
+      }
+
+      # Deliver the message to the mailbox
+      exception {
+         # for those who unsubscribed themselves - subscribe them
+         `if ! grep -q INBOX.$SPAM_DIR $HOME_DIR/$HOST/$USER/courierimapsubscribed; then echo INBOX.$SPAM_DIR >> $HOME_DIR/$HOST/$USER/courierimapsubscribed; fi`
+         to "$HOME_DIR/$HOST/$USER/.$SPAM_DIR"
+      }
+   }
+}
+

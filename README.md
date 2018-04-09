@@ -1,2 +1,5 @@
-# mailserver-postfix-courier-docker
-Mailserver Docker Image with Postfix as MTA, Courier as IMAP Server, Maildrop, Spamassassin and Sqlgrey
+Mailserver (Postfix SMTP, Courier IMAP)
+=======================================
+
+Docker Image for SMTP Server (Postfix) and IMAP Server (Courier), including all Mail-Receiving and Sending Utilities (Maildrop, SqlGrey & Spam Assassin)
+

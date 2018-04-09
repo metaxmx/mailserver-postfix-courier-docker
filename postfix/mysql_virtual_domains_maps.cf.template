@@ -1,0 +1,1 @@
+query = SELECT domain FROM domain WHERE domain='%s' AND active = '1'

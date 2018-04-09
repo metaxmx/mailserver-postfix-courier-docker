@@ -1,0 +1,4 @@
+# Whitelist for Greylisting
+# Use 1 per line:
+# somedomain.com
+# *.otherdomain.com

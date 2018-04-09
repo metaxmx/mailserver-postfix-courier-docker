@@ -1,0 +1,4 @@
+user = postfix
+password = *******
+hosts = mysql
+dbname = postfix
