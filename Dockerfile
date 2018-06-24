@@ -6,6 +6,8 @@ ENV TLS_PRIVKEY=/etc/ssl/mailserver/privkey.pem
 ENV TLS_CERTFILE=/etc/ssl/mailserver/cert.pem
 ENV TLS_CAFILE=/etc/ssl/mailserver/chain.pem
 ENV TLS_FULLCHAINFILE=/etc/ssl/mailserver/fullchain.pem
+ENV MAILMAN_ALIASMAPS=hash:/usr/local/mailman/data/aliases
+ENV DEBIAN_FRONTEND noninteractive
 
 # Postfix/Courier non-interactive setup
 RUN echo "postfix postfix/mailname string ${DOMAIN_PRIMARY}" | debconf-set-selections
@@ -23,6 +25,15 @@ RUN apt-get update \
     postfix postfix-mysql spamassassin spamc maildrop sqlgrey gamin \
     courier-authdaemon courier-authlib-mysql courier-pop courier-pop-ssl courier-imap courier-imap-ssl \
     libsasl2-2 libsasl2-modules libsasl2-modules-sql sasl2-bin libpam-mysql rsyslog mysql-client less
+
+# Mailman non-interactive setup
+RUN echo "de_DE.UTF-8 UTF-8" > /etc/locale.gen \
+    && apt-get install -y mailman \
+    && apt-get clean \
+    && echo "mailman  mailman/default_server_language select de" | debconf-set-selections \
+    && echo "mailman  mailman/site_languages multiselect de" | debconf-set-selections \
+    && echo "mailman  mailman/used_languages string de" | debconf-set-selections \
+    && dpkg-reconfigure mailman
 
 COPY maildroprc /etc/maildroprc
 
@@ -48,11 +59,15 @@ RUN chmod a+x /usr/local/bin/init-service.sh
 
 VOLUME /home/postfix
 VOLUME /etc/mailserver
+VOLUME ["/etc/mailman/", "/var/lib/mailman", "/var/log/mailman"]
 
 # SMTP
 EXPOSE 25
 
 # IMAP (SSL)
 EXPOSE 993
+
+# WEB
+EXPOSE 80
 
 CMD ["/usr/local/bin/init-service.sh"]

@@ -667,7 +667,7 @@ inet_protocols = ipv4
 
 ##### Custom Settings ######
 
-alias_maps = hash:/etc/aliases
+alias_maps = hash:/etc/aliases, @{MAILMAN_ALIASMAPS}
 alias_database = hash:/etc/aliases
 
 # SASL settings
