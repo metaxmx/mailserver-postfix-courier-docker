@@ -35,6 +35,8 @@ RUN echo "de_DE.UTF-8 UTF-8" > /etc/locale.gen \
     && echo "mailman  mailman/used_languages string de" | debconf-set-selections \
     && dpkg-reconfigure mailman
 
+RUN cp /etc/mailman/postfix-to-mailman.py /var/lib/mailman/bin/
+
 COPY maildroprc /etc/maildroprc
 
 COPY spamassassin/local.cf /etc/spamassassin/

@@ -109,9 +109,9 @@ maildrop  unix  -       n       n       -       -       pipe
 #  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -t$nexthop -f$sender $recipient
 #scalemail-backend unix	-	n	n	-	2	pipe
 #  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store ${nexthop} ${user} ${extension}
-#mailman   unix  -       n       n       -       -       pipe
-#  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
-#  ${nexthop} ${user}
+mailman   unix  -       n       n       -       -       pipe
+  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
+  ${nexthop} ${user}
 
 spamassassin unix -     n       n       -       -       pipe
         user=debian-spamd argv=/usr/bin/spamc -f -e

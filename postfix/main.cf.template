@@ -296,7 +296,7 @@ mynetworks_style = host
 # list this system as their primary or backup MX host. See the
 # permit_mx_backup restriction description in postconf(5).
 #
-relay_domains = 
+relay_domains = mail.kahl-com.de
 
 # INTERNET OR INTRANET
 
@@ -331,7 +331,12 @@ relay_domains =
 # In the left-hand side, specify an @domain.tld wild-card, or specify
 # a user@domain.tld address.
 # 
-#relay_recipient_maps = hash:/etc/postfix/relay_recipients
+relay_recipient_maps = hash:/var/lib/mailman/aliases
+
+# CUSTOM
+transport_maps = hash:/etc/postfix/transport
+mailman_destination_recipient_limit = 1
+   
 
 # INPUT RATE CONTROL
 #
@@ -667,7 +672,7 @@ inet_protocols = ipv4
 
 ##### Custom Settings ######
 
-alias_maps = hash:/etc/aliases, ${MAILMAN_ALIASMAPS}
+alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 
 # SASL settings
