@@ -8,6 +8,7 @@ ENV TLS_CAFILE=/etc/ssl/mailserver/chain.pem
 ENV TLS_FULLCHAINFILE=/etc/ssl/mailserver/fullchain.pem
 ENV MAILMAN_ALIASMAPS=hash:/var/lib/mailman/data/aliases
 ENV DEBIAN_FRONTEND noninteractive
+ENV RELAY_DOMAINS lists.example.com
 
 # Postfix/Courier non-interactive setup
 RUN echo "postfix postfix/mailname string ${DOMAIN_PRIMARY}" | debconf-set-selections
@@ -35,7 +36,7 @@ RUN echo "de_DE.UTF-8 UTF-8" > /etc/locale.gen \
     && echo "mailman  mailman/used_languages string de" | debconf-set-selections \
     && dpkg-reconfigure mailman
 
-RUN cp /etc/mailman/postfix-to-mailman.py /var/lib/mailman/bin/
+RUN cp /etc/mailman/postfix-to-mailman.py /usr/lib/mailman/bin/
 
 COPY maildroprc /etc/maildroprc
 

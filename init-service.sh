@@ -54,12 +54,15 @@ sed -i -e "s@\${TLS_PRIVKEY}@$TLS_PRIVKEY@" /etc/postfix/main.cf
 sed -i -e "s@\${TLS_CERTFILE}@$TLS_CERTFILE@" /etc/postfix/main.cf
 sed -i -e "s@\${TLS_CAFILE}@$TLS_CAFILE@" /etc/postfix/main.cf
 sed -i -e "s@\${MAILMAN_ALIASMAPS}@$MAILMAN_ALIASMAPS@" /etc/postfix/main.cf
+sed -i -e "s@\${RELAY_DOMAINS}@$RELAY_DOMAINS@" /etc/postfix/main.cf
 
 echo "[MailServer] Combining TLS Certificates"
 cat ${TLS_PRIVKEY} ${TLS_FULLCHAINFILE} > /etc/courier/imap_combined.pem
 
 echo "[MailServer] Removing old PIDs ..."
 rm -r /var/run/*.pid
+
+echo "$RELAY_DOMAINS mailman:" > /etc/postfix/transport
 
 echo "[MailServer] Start Services ..."
 

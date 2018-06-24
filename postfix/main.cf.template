@@ -296,7 +296,7 @@ mynetworks_style = host
 # list this system as their primary or backup MX host. See the
 # permit_mx_backup restriction description in postconf(5).
 #
-relay_domains = mail.kahl-com.de
+relay_domains = ${RELAY_DOMAINS}
 
 # INTERNET OR INTRANET
 
@@ -333,7 +333,7 @@ relay_domains = mail.kahl-com.de
 # 
 relay_recipient_maps = hash:/var/lib/mailman/aliases
 
-# CUSTOM
+# Mailman Config
 transport_maps = hash:/etc/postfix/transport
 mailman_destination_recipient_limit = 1
    
