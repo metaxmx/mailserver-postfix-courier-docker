@@ -6,7 +6,7 @@ ENV TLS_PRIVKEY=/etc/ssl/mailserver/privkey.pem
 ENV TLS_CERTFILE=/etc/ssl/mailserver/cert.pem
 ENV TLS_CAFILE=/etc/ssl/mailserver/chain.pem
 ENV TLS_FULLCHAINFILE=/etc/ssl/mailserver/fullchain.pem
-ENV MAILMAN_ALIASMAPS=hash:/usr/local/mailman/data/aliases
+ENV MAILMAN_ALIASMAPS=hash:/var/lib/mailman/data/aliases
 ENV DEBIAN_FRONTEND noninteractive
 
 # Postfix/Courier non-interactive setup
@@ -59,7 +59,7 @@ RUN chmod a+x /usr/local/bin/init-service.sh
 
 VOLUME /home/postfix
 VOLUME /etc/mailserver
-VOLUME ["/etc/mailman/", "/var/lib/mailman", "/var/log/mailman"]
+VOLUME ["/etc/mailman/", "/var/lib/mailman/data"]
 
 # SMTP
 EXPOSE 25

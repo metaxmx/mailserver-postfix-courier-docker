@@ -55,8 +55,6 @@ sed -i -e "s@\${TLS_CERTFILE}@$TLS_CERTFILE@" /etc/postfix/main.cf
 sed -i -e "s@\${TLS_CAFILE}@$TLS_CAFILE@" /etc/postfix/main.cf
 sed -i -e "s@\${MAILMAN_ALIASMAPS}@$MAILMAN_ALIASMAPS@" /etc/postfix/main.cf
 
-echo "add_virtualhost('mailman.kahl-com.de','kahl-com.de')" >> /etc/mailman/mm_cfg.py
-
 echo "[MailServer] Combining TLS Certificates"
 cat ${TLS_PRIVKEY} ${TLS_FULLCHAINFILE} > /etc/courier/imap_combined.pem
 
